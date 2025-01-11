@@ -1,2 +1,75 @@
 # radiographpanoramic-flask-backend-restapi
-Backend REST API of Radiograph Panoramic
+
+```
+└── 📁src
+    └── 📁__pycache__
+        └── __init__.cpython-311.pyc
+        └── app.cpython-311.pyc
+        └── extensions.cpython-311.pyc
+    └── 📁configs
+        └── 📁__pycache__
+            └── database.cpython-311.pyc
+        └── database.py
+    └── 📁controllers
+        └── 📁__pycache__
+            └── radiograph_controller.cpython-311.pyc
+            └── user_controller.cpython-311.pyc
+        └── radiograph_controller.py
+        └── user_controller.py
+    └── 📁handlers
+        └── radiograph_file_handler.py
+    └── 📁helpers
+        └── radiograph_image_helper.py
+    └── 📁middlewares
+        └── cors_middleware.py
+        └── jwt_middleware.py
+    └── 📁ml_models
+        └── unet_gigi_100.h5
+    └── 📁models
+        └── 📁__pycache__
+            └── radiograph_model.cpython-311.pyc
+            └── user_model.cpython-311.pyc
+        └── radiograph_model.py
+        └── user_model.py
+    └── 📁routes
+        └── 📁__pycache__
+            └── auth_route.cpython-311.pyc
+            └── predict_route.cpython-311.pyc
+            └── radiograph_route.cpython-311.pyc
+        └── auth_route.py
+        └── radiograph_route.py
+    └── 📁seeds
+        └── user_seeder.py
+    └── 📁services
+        └── 📁__pycache__
+            └── radiograph_service.cpython-311.pyc
+        └── radiograph_service.py
+    └── 📁temp
+    └── 📁utils
+        └── base64_util.py
+    └── 📁validations
+        └── image_validation.py
+    └── __init__.py
+    └── app.py
+    └── extensions.py
+└── 📁uploads
+    └── 📁original
+    └── 📁predicted
+        └── predicted_520.AFIRA.21_THN.jpg
+        └── predicted_576.ATHAYA.13TH.jpg
+└── 📁migrations
+    └── 📁__pycache__
+        └── env.cpython-311.pyc
+    └── 📁versions
+        └── 📁__pycache__
+            └── 1dce04817066_feat_migration_create_users_table.cpython-311.pyc
+        └── 1dce04817066_feat_migration_create_users_table.py
+    └── alembic.ini
+    └── env.py
+    └── README
+    └── script.py.mako
+└── .env
+└── script.py.mako
+└── requirements.txt
+└── wsgi.py
+```
