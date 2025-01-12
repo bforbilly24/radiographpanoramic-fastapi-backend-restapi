@@ -15,7 +15,6 @@ classes = {
     "background": [0, 0, 0],
 }
 
-
 def load_model(model_path):
     """Loads the model from the file system."""
     model = tf.keras.models.load_model(model_path)
@@ -59,7 +58,6 @@ def convert_class_to_rgb(mask_class, class_colors):
 
 
 def predict_image(model, image_path):
-    """Predict the segmentation of the radiograph image using the model."""
     try:
         os.makedirs("uploads/predicted", exist_ok=True)
 
@@ -73,19 +71,32 @@ def predict_image(model, image_path):
 
         predicted_filename = "predicted_" + os.path.basename(image_path)
         predicted_file_path = os.path.join("uploads", "predicted", predicted_filename)
-
         cv2.imwrite(
             predicted_file_path, cv2.cvtColor(predicted_mask_rgb, cv2.COLOR_RGB2BGR)
         )
 
+        detected_conditions = {
+            "has_gigi_sehat": False,
+            "has_impaksi": False,
+            "has_karies": False,
+            "has_lesi_periapikal": False,
+            "has_resorpsi": False,
+        }
+
+        for condition_name, rgb_color in classes.items():
+            if condition_name != "background": 
+                condition_key = f"has_{condition_name.lower().replace(' ', '_')}"
+                condition_mask = np.all(predicted_mask_rgb == rgb_color, axis=-1)
+                if np.any(condition_mask):
+                    detected_conditions[condition_key] = True
+
         with open(predicted_file_path, "rb") as img_file:
             encoded_image = base64.b64encode(img_file.read()).decode("utf-8")
 
-        return encoded_image, predicted_file_path
+        return encoded_image, predicted_file_path, detected_conditions
 
     except Exception as e:
         raise Exception(f"Prediction failed: {str(e)}")
-
 
 
 CONDITIONS = {
@@ -94,7 +105,6 @@ CONDITIONS = {
     "Lesi_Periapikal": [42, 125, 209],
     "Resorpsi": [250, 50, 83],
 }
-
 
 def apply_filters(image_path, selected_conditions):
     """
