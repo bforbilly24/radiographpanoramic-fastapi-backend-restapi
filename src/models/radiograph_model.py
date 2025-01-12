@@ -6,14 +6,18 @@ from werkzeug.utils import secure_filename
 class Radiograph(db.Model):
     __tablename__ = 'radiographs'
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True) 
-    tasks = db.Column(db.String(50), unique=True, nullable=False)  
-    patient_name = db.Column(db.String(255), nullable=False)  
-    original = db.Column(db.String(255), nullable=False)  
-    status_detection = db.Column(db.Enum('success', 'in progress', 'failed', name='status_enum'), nullable=False)  # Status of the detection
-    predicted = db.Column(db.String(255), nullable=True)  
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)  
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)  
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    tasks = db.Column(db.String(50), unique=True, nullable=False)
+    patient_name = db.Column(db.String(255), nullable=False)
+    original = db.Column(db.String(255), nullable=False)
+    status_detection = db.Column(db.Enum('success', 'in progress', 'failed', name='status_enum'), nullable=False)
+    predicted = db.Column(db.String(255), nullable=True)
+    has_lesi_periapikal = db.Column(db.Boolean, default=False)
+    has_resorpsi = db.Column(db.Boolean, default=False)       
+    has_karies = db.Column(db.Boolean, default=False)         
+    has_impaksi = db.Column(db.Boolean, default=False)        
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     def __init__(self, patient_name, original, status_detection, predicted=None):
         self.patient_name = patient_name
