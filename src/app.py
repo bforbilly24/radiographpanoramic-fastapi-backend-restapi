@@ -11,7 +11,6 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 from src.configs.database import Config
 from src.extensions import db, migrate
 
-# Initialize JWT
 jwt = JWTManager()
 
 @jwt.unauthorized_loader
@@ -38,15 +37,16 @@ def create_app():
     jwt.init_app(app)
 
 
-    # Additional configurations
     app.config["UPLOAD_FOLDER"] = "uploads/original"
     app.config["PREDICTED_FOLDER"] = "uploads/predicted"
 
     from src.routes.radiograph_route import radiograph_route
     from src.routes.auth_route import auth_route
+    from src.routes.category_route import category_route
 
     app.register_blueprint(radiograph_route)  
     app.register_blueprint(auth_route)        
+    app.register_blueprint(category_route)     
 
     return app
 
