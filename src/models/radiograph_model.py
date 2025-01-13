@@ -1,49 +1,52 @@
 # src/models/radiograph_model.py
-from datetime import datetime
-from src.extensions import db
-from werkzeug.utils import secure_filename
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Enum
+from sqlalchemy.sql import func
+from src.db.base import Base
+from typing import Optional
+from sqlalchemy.orm import Session
 
-class Radiograph(db.Model):
-    __tablename__ = 'radiographs'
+class Radiograph(Base):
+    __tablename__ = "radiographs"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    tasks = db.Column(db.String(50), unique=True, nullable=False)
-    patient_name = db.Column(db.String(255), nullable=False)
-    original = db.Column(db.String(255), nullable=False)
-    status_detection = db.Column(db.Enum('success', 'in progress', 'failed', name='status_enum'), nullable=False)
-    predicted = db.Column(db.String(255), nullable=True)
-    has_lesi_periapikal = db.Column(db.Boolean, default=False)
-    has_resorpsi = db.Column(db.Boolean, default=False)       
-    has_karies = db.Column(db.Boolean, default=False)         
-    has_impaksi = db.Column(db.Boolean, default=False)        
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
-    def __init__(self, patient_name, original, status_detection, predicted=None):
-        self.patient_name = patient_name
-        self.original = original
-        self.status_detection = status_detection
-        self.predicted = predicted
-
-    def __repr__(self):
-        return f"<Radiograph {self.patient_name} - {self.tasks}>"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    tasks = Column(String(50), unique=True, nullable=False)
+    patient_name = Column(String(255), nullable=False)
+    original = Column(String(255), nullable=False)
+    status_detection = Column(Enum("success", "in progress", "failed", name="status_enum"), nullable=False)
+    predicted = Column(String(255), nullable=True)
+    has_lesi_periapikal = Column(Boolean, default=False)
+    has_resorpsi = Column(Boolean, default=False)
+    has_karies = Column(Boolean, default=False)
+    has_impaksi = Column(Boolean, default=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
     @staticmethod
-    def generate_task_id():
-        last_task = Radiograph.query.order_by(Radiograph.id.desc()).first()
+    def generate_task_id(db: Session) -> str:
+        last_task = db.query(Radiograph).order_by(Radiograph.id.desc()).first()
         next_task_number = 1 if last_task is None else last_task.id + 1
         return f'task-{next_task_number}'
 
     @classmethod
-    def create_and_generate_task(cls, patient_name, original, status_detection, predicted=None):
-        task_id = cls.generate_task_id()
+    def create_and_generate_task(
+        cls,
+        db: Session,
+        patient_name: str,
+        original: str,
+        status_detection: str,
+        predicted: Optional[str] = None,
+        **kwargs
+    ):
+        task_id = cls.generate_task_id(db)
         new_radiograph = cls(
+            tasks=task_id,
             patient_name=patient_name,
             original=original,
             status_detection=status_detection,
-            predicted=predicted
+            predicted=predicted,
+            **kwargs
         )
-        new_radiograph.tasks = task_id
-        db.session.add(new_radiograph)
-        db.session.commit()
+        db.add(new_radiograph)
+        db.commit()
+        db.refresh(new_radiograph)
         return new_radiograph
