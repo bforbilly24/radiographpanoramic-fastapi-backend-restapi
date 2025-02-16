@@ -1,51 +1,42 @@
+# src/main.py
+Script:
+uvicorn src.main:app --reload
+
 ```
+└── 📁migrations
+    └── 📁versions
+        └── 951cd5d7639e_initial_migration.py
+        └── abb10ccaa8b5_add_tokenblacklist_table.py
+        └── cc893fd61fb5_add_expires_at_to_token_blacklist.py
+        └── e4eb2e45db20_initial_migration.py
+    └── env.py
+    └── README
+    └── script.py.make
 └── 📁src
-    └── 📁__pycache__
-        └── main.cpython-311.pyc
     └── 📁app
         └── 📁v1
-            └── 📁__pycache__
-                └── api.cpython-311.pyc
             └── api.py
             └── 📁endpoints
-                └── 📁__pycache__
-                    └── auth.cpython-311.pyc
-                    └── category.cpython-311.pyc
-                    └── radiograph.cpython-311.pyc
                 └── auth.py
                 └── category.py
                 └── radiograph.py
     └── 📁core
-        └── 📁__pycache__
-            └── config.cpython-311.pyc
-            └── security.cpython-311.pyc
         └── config.py
         └── security.py
     └── 📁db
-        └── 📁__pycache__
-            └── base.cpython-311.pyc
-            └── session.cpython-311.pyc
         └── base.py
         └── session.py
     └── 📁handlers
-        └── 📁__pycache__
-            └── response_handler.cpython-311.pyc
         └── response_handler.py
     └── 📁ml_models
         └── unet_gigi_100.h5
+        └── unet_gigi_penyakit.h5
     └── 📁models
-        └── 📁__pycache__
-            └── category_model.cpython-311.pyc
-            └── radiograph_model.cpython-311.pyc
-            └── token_blacklist_model.cpython-311.pyc
-            └── user_model.cpython-311.pyc
         └── category_model.py
         └── radiograph_model.py
         └── token_blacklist_model.py
         └── user_model.py
     └── 📁schemas
-        └── 📁__pycache__
-            └── category_schema.cpython-311.pyc
         └── category_schema.py
         └── radiograph_schema.py
         └── user_schema.py
@@ -54,16 +45,9 @@
         └── run_seeder.py
         └── user_seeder.py
     └── 📁services
-        └── 📁__pycache__
-            └── radiograph_service.cpython-311.pyc
         └── radiograph_service.py
     └── 📁utils
-        └── 📁__pycache__
-            └── dependencies.cpython-311.pyc
         └── dependencies.py
+    └── .DS_Store
     └── main.py
-└── .env
-└── requirements.txt
-└── README.md
-└── alembic.cfg
 ```
