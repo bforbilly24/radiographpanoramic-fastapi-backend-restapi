@@ -9,7 +9,6 @@ from typing import Tuple, Dict, List, Optional
 from fastapi import UploadFile, HTTPException
 
 classes = {
-    "Gigi Sehat": [51, 221, 255],
     "Impaksi": [184, 61, 245],
     "Karies": [221, 255, 51],
     "Lesi Periapikal": [42, 125, 209],

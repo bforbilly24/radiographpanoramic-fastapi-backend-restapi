@@ -9,10 +9,11 @@ import os
 
 router = APIRouter()
 
+
 @router.post("/predict")
 async def predict_radiograph(
     file: UploadFile = File(...),
-    patient_name: str = Form(..., min_length=1), 
+    patient_name: str = Form(..., min_length=1),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
@@ -26,7 +27,7 @@ async def predict_radiograph(
         status_detection = "process"
 
         # Load model
-        model = await load_model("src/ml_models/unet_gigi_100.h5")
+        model = await load_model("src/ml_models/unet_gigi_penyakit.h5")
 
         # Lakukan prediksi
         encoded_image, predicted_file_path, detected_conditions = await predict_image(
@@ -90,3 +91,46 @@ async def filter_radiographs(
 
     radiographs = query.all()
     return radiographs
+
+
+@router.delete("/{radiograph_id}")
+async def delete_radiograph(
+    radiograph_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    try:
+        # Find the radiograph
+        radiograph = db.query(Radiograph).filter(Radiograph.id == radiograph_id).first()
+
+        if not radiograph:
+            raise HTTPException(
+                status_code=404, detail=f"Radiograph with ID {radiograph_id} not found"
+            )
+
+        # Delete the physical files
+        files_to_delete = [radiograph.original, radiograph.predicted]
+
+        for file_path in files_to_delete:
+            if file_path and os.path.exists(file_path):
+                try:
+                    os.remove(file_path)
+                except OSError as e:
+                    print(f"Error deleting file {file_path}: {e}")
+
+        # Delete from database
+        db.delete(radiograph)
+        db.commit()
+
+        return {
+            "status_code": 200,
+            "message": f"Radiograph with ID {radiograph_id} has been deleted successfully",
+            "data": None,
+            "error": None,
+        }
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"An error occurred while deleting the radiograph: {str(e)}",
+        )
