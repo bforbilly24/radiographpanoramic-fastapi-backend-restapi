@@ -1,75 +1,69 @@
-# radiographpanoramic-flask-backend-restapi
-
 ```
 └── 📁src
     └── 📁__pycache__
-        └── __init__.cpython-311.pyc
-        └── app.cpython-311.pyc
-        └── extensions.cpython-311.pyc
-    └── 📁configs
+        └── main.cpython-311.pyc
+    └── 📁app
+        └── 📁v1
+            └── 📁__pycache__
+                └── api.cpython-311.pyc
+            └── api.py
+            └── 📁endpoints
+                └── 📁__pycache__
+                    └── auth.cpython-311.pyc
+                    └── category.cpython-311.pyc
+                    └── radiograph.cpython-311.pyc
+                └── auth.py
+                └── category.py
+                └── radiograph.py
+    └── 📁core
         └── 📁__pycache__
-            └── database.cpython-311.pyc
-        └── database.py
-    └── 📁controllers
+            └── config.cpython-311.pyc
+            └── security.cpython-311.pyc
+        └── config.py
+        └── security.py
+    └── 📁db
         └── 📁__pycache__
-            └── radiograph_controller.cpython-311.pyc
-            └── user_controller.cpython-311.pyc
-        └── radiograph_controller.py
-        └── user_controller.py
+            └── base.cpython-311.pyc
+            └── session.cpython-311.pyc
+        └── base.py
+        └── session.py
     └── 📁handlers
-        └── radiograph_file_handler.py
-    └── 📁helpers
-        └── radiograph_image_helper.py
-    └── 📁middlewares
-        └── cors_middleware.py
-        └── jwt_middleware.py
+        └── 📁__pycache__
+            └── response_handler.cpython-311.pyc
+        └── response_handler.py
     └── 📁ml_models
         └── unet_gigi_100.h5
     └── 📁models
         └── 📁__pycache__
+            └── category_model.cpython-311.pyc
             └── radiograph_model.cpython-311.pyc
+            └── token_blacklist_model.cpython-311.pyc
             └── user_model.cpython-311.pyc
+        └── category_model.py
         └── radiograph_model.py
+        └── token_blacklist_model.py
         └── user_model.py
-    └── 📁routes
+    └── 📁schemas
         └── 📁__pycache__
-            └── auth_route.cpython-311.pyc
-            └── predict_route.cpython-311.pyc
-            └── radiograph_route.cpython-311.pyc
-        └── auth_route.py
-        └── radiograph_route.py
+            └── category_schema.cpython-311.pyc
+        └── category_schema.py
+        └── radiograph_schema.py
+        └── user_schema.py
     └── 📁seeds
+        └── category_seeder.py
+        └── run_seeder.py
         └── user_seeder.py
     └── 📁services
         └── 📁__pycache__
             └── radiograph_service.cpython-311.pyc
         └── radiograph_service.py
-    └── 📁temp
     └── 📁utils
-        └── base64_util.py
-    └── 📁validations
-        └── image_validation.py
-    └── __init__.py
-    └── app.py
-    └── extensions.py
-└── 📁uploads
-    └── 📁original
-    └── 📁predicted
-        └── predicted_520.AFIRA.21_THN.jpg
-        └── predicted_576.ATHAYA.13TH.jpg
-└── 📁migrations
-    └── 📁__pycache__
-        └── env.cpython-311.pyc
-    └── 📁versions
         └── 📁__pycache__
-            └── 1dce04817066_feat_migration_create_users_table.cpython-311.pyc
-        └── 1dce04817066_feat_migration_create_users_table.py
-    └── alembic.ini
-    └── env.py
-    └── README
-    └── script.py.mako
+            └── dependencies.cpython-311.pyc
+        └── dependencies.py
+    └── main.py
 └── .env
-└── script.py.mako
 └── requirements.txt
-└── wsgi.py
+└── README.md
+└── alembic.cfg
 ```

@@ -1,13 +1,16 @@
 # src/seeds/category_seeder.py
+from sqlalchemy.orm import Session
 from src.models.category_model import Category
-from src.extensions import db
 
-def seed_categories():
+def seed_categories(db: Session):
     categories = ["Lesi Periapikal", "Resorpsi", "Karies", "Impaksi"]
+
     for category_name in categories:
-        existing_category = Category.query.filter_by(name=category_name).first()
+        # Check if the category already exists
+        existing_category = db.query(Category).filter(Category.name == category_name).first()
         if not existing_category:
             new_category = Category(name=category_name)
-            db.session.add(new_category)
-    db.session.commit()
+            db.add(new_category)
+
+    db.commit()
     print("Categories seeded successfully.")

@@ -1,39 +1,45 @@
 # src/seeds/user_seeder.py
-import sys
-import os
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
-
-from src.app import create_app, db
+from sqlalchemy.orm import Session
 from src.models.user_model import User
-from werkzeug.security import generate_password_hash
+from passlib.context import CryptContext
 
-app = create_app()
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-def seed_users():
-    with app.app_context():
-        if not User.query.filter_by(email="superadmin@mail.com").first():
-            super_admin = User(
-                name="Super Admin",
-                email="superadmin@mail.com",
-                role="super_admin",
-                password=generate_password_hash("kopi90") 
+
+def get_password_hash(password: str) -> str:
+    """Hash the password for secure storage."""
+    return pwd_context.hash(password)
+
+
+def seed_users(db: Session):
+    users = [
+        {
+            "name": "Super Admin",
+            "email": "superadmin@mail.com",
+            "role": "super_admin",
+            "password": "kopi90",
+        },
+        {
+            "name": "Admin",
+            "email": "admin@mail.com",
+            "role": "admin",
+            "password": "kopi90",
+        },
+    ]
+
+    for user_data in users:
+        # Check if the user already exists
+        existing_user = db.query(User).filter(User.email == user_data["email"]).first()
+        if not existing_user:
+            hashed_password = get_password_hash(user_data["password"])
+            new_user = User(
+                name=user_data["name"],
+                email=user_data["email"],
+                role=user_data["role"],
+                password=hashed_password,
             )
-            db.session.add(super_admin)
-            print("Super Admin added!")
+            db.add(new_user)
+            print(f"{user_data['name']} added!")
 
-        if not User.query.filter_by(email="admin@mail.com").first():
-            admin = User(
-                name="Admin",
-                email="admin@mail.com",
-                role="admin",
-                password=generate_password_hash("kopi90") 
-            )
-            db.session.add(admin)
-            print("Admin added!")
-
-        db.session.commit()
-        print("Seeder completed: Users have been added.")
-
-if __name__ == "__main__":
-    seed_users()
+    db.commit()
+    print("Seeder completed: Users have been added.")
