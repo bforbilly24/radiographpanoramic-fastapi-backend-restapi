@@ -1,3 +1,33 @@
-.venv
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Lingkungan Virtual (uv default)
+.venv/
+
+# File Lingkungan
 .env
-__pycache__
+*.env
+
+# File Sementara uv
+.uv_cache/
+uv.lock
+
+# Cache dan Log
+*.log
+*.cache
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# File Sistem
+.DS_Store
+Thumbs.db
+
+# File Editor
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
